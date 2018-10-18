@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Lihat Semua Jabatan</title>
+		<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+		<object th:include="fragments/fragment :: js" th:remove="tag"></object>
+	</head>
+	<body>
+		<nav th:replace="fragments/fragment :: navbar"></nav>
+		<br>
+		
+		<div class="container">
+			<table id="example" class="table table-striped table-bordered" style="width:100%">
+				<thead>
+				    <tr>
+				        <th>Nama</th>
+				        <th>Deskripsi</th>
+				        <th>Gaji Pokok</th>
+				    </tr>
+				</thead>
+				<tbody>
+					<div th:each="jabatan : ${semuaJabatan}">
+					    <tr>
+					        <td><p th:text="${jabatan.nama}"></p></td>
+					        <td><p th:text="${jabatan.deskripsi}"></p></td>
+					        <td><p th:text="${jabatan.gaji_pokok}"></p></td>
+					    </tr>
+				    </div>
+				</tbody>
+			</table>
+		
+			<footer th:replace="fragments/fragment :: footer"></footer>
+		</div>
+		
+		<script>
+			$(document).ready(function() {
+			    $('#example').DataTable();
+			} );
+		</script>
+	</body>
+</html>

@@ -1,0 +1,24 @@
+							<form th:action="@{/jabatan/lihat}" method="GET">
+								<div class="form-group">
+									<label for="nama">Pilih Jabatan</label>
+									<div th:each="jabatan : ${semuaJabatan}">
+										<select class="form-control" id="nama" name="jabatan.id">
+										
+											<option th:text="${jabatan.nama}"></option>
+										
+										</select>
+									</div>
+									<br>
+								</div>
+								<button type="submit" class="btn btn-primary">Lihat</button>
+							</form>
+							
+							
+							
+List<JabatanModel> semuaJabatan = jabatanService.getAllJabatan();
+		
+		for(int i=0; i < semuaJabatan.size(); i++) {
+			System.out.println(semuaJabatan.get(i));
+		}
+		
+		model.addAttribute("semuaJabatan", semuaJabatan);

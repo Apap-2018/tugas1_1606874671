@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<object th:include="fragments/fragment :: title" th:remove="tag"></object>
+		<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+		<object th:include="fragments/fragment :: js" th:remove="tag"></object>
+	</head>
+	<body>
+		<nav th:replace="fragments/fragment :: navbar"></nav>
+		<br>
+		
+		<div class="container">
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header">
+						<h2 th:text="'Detail Jabatan ' + ${jabatan.nama}"></h2>
+					</div>
+					<div class="card-body">
+						<table class="table">
+							<tbody>
+								<tr>
+									<td><p>Nama</p></td>
+									<td><p th:text="${jabatan.nama}"></p></td>
+								</tr>
+								<tr>
+									<td><p>Deskripsi</p></td>
+									<td><p th:text="${jabatan.deskripsi}"></p></td>
+								</tr>
+								<tr>
+									<td><p>Gaji Pokok</p></td>
+									<td><p th:text="'Rp' + ${gaji_pokok}"></p></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="card-footer">
+						<div class="row">
+							<form th:action="@{/jabatan/ubah/} + ${jabatan.id}">
+								<button type="submit" class="btn btn-primary">Ubah</button>
+							</form>
+							<form th:action="@{/jabatan/hapus/} + ${jabatan.id}" style="margin-left:10px">
+								<button type="submit" class="btn btn-danger">Hapus</button>
+							</form>
+						</div>
+					</div>
+				</div>
+				<br>
+				<form><input type="button" class="btn btn-danger" value="Back" onclick="history.back()"></form>
+			</div>
+			<footer th:replace="fragments/fragment :: footer"></footer>
+		</div>
+		
+		<script th:replace="fragments/fragment :: script"></script>
+	</body>
+</html>

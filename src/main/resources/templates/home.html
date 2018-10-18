@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<object th:include="fragments/fragment :: title" th:remove="tag"></object>
+		<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+		<object th:include="fragments/fragment :: js" th:remove="tag"></object>
+	</head>
+	
+	<body>
+		<nav th:replace="fragments/fragment :: navbar"></nav>
+		<br>
+
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12">
+					<div class="d-flex justify-content-center"><h1>Sistem Informasi Kepegawaian</h1></div>
+					<div class="d-flex justify-content-center"><p>Selamat datang di Sistem Informasi Kepegawaian</p></div>
+					<br>
+					<div class="card">
+						<div class="card-header">
+							<h2>Lihat Data Pegawai berdasarkan NIP</h2>
+						</div>
+						<div class="card-body">
+							<p>Masukan Nomor Induk Pegawai</p>
+							<form th:action="@{/pegawai/lihat}" method="GET">
+								<input type="text" name="nip" class="form-control" />
+								<br>
+								<button type="submit" class="btn btn-primary">Lihat</button>
+							</form>
+						</div>
+						<div class="card-header">
+							<h2>Lihat Detail Jabatan</h2>
+						</div>
+						<div class="card-body">
+							<form th:action="@{/jabatan/lihat}" method="GET">
+								<label name="id">Pilih Jabatan</label>
+								<select name="id" class="form-control">
+									<option value="">Pilih jabatan</option>
+									<option th:each="jabatan : ${semuaJabatan}"
+										th:value="${jabatan.getId()}"
+										th:text="${jabatan.getNama()}">
+									</option>	
+								</select>
+								<br>
+								<button type="submit" class="btn btn-primary">Lihat</button>
+							</form>
+						</div>
+						<div class="card-header">
+							<h2>Lihat Pegawai Termuda dan Tertua</h2>
+						</div>
+						<div class="card-body">
+							<form th:action="@{/pegawai/termuda-tertua}" method="GET">
+								<label name="id">Pilih Instansi</label>
+								<select name="id" class="form-control">
+									<option value="">Pilih Instansi</option>
+									<option th:each="instansi : ${semuaInstansi}"
+										th:value="${instansi.getId()}"
+										th:text="${instansi.getNama()} + ' - ' + ${instansi.getProvinsi().getNama()}">
+									</option>	
+								</select>
+								<br>
+								<button type="submit" class="btn btn-primary">Lihat</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+			<footer th:replace="fragments/fragment :: footer"></footer>
+		</div>
+		
+		<script th:replace="fragments/fragment :: script"></script>
+	</body>
+</html>

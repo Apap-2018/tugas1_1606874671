@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+		<object th:include="fragments/fragment :: js" th:remove="tag"></object>
+	</head>
+	<body>
+		<nav th:replace="fragments/fragment :: navbar"></nav>
+		<br>
+		
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="card">
+						<div class="card-header">
+							<h2>Data Pegawai Termuda</h2>
+						</div>
+						<div class="card-body">
+							<table class="table">
+								<tbody>
+									<tr>
+										<td><p>NIP</p></td>
+										<td><p th:text="${pegawaiTermuda.nip}"></p></td>
+									</tr>
+									<tr>
+										<td><p>Nama</p></td>
+										<td><p th:text="${pegawaiTermuda.nama}"></p></td>
+									</tr>
+									<tr>
+										<td><p>Tempat Lahir</p></td>
+										<td><p th:text="${pegawaiTermuda.tempat_lahir}"></p></td>
+									</tr>
+									<tr>
+										<td><p>Tanggal Lahir</p></td>
+										<td><p th:text="${pegawaiTermuda.tanggal_lahir}"></p></td>
+									</tr>
+									<tr>
+										<td><p>Tahun Masuk</p></td>
+										<td><p th:text="${pegawaiTermuda.tahun_masuk}"></p></td>
+									</tr>
+									<tr>
+										<td><p>Nama Instansi</p></td>
+										<td><p th:text="${pegawaiTermuda.instansi.nama}"></p></td>
+									</tr>
+									<tr>
+										<td><p>Jabatan</p></td>
+										<td><ul th:each="jabatan_pegawai,iterationStatus : *{pegawaiTermuda.jabatan_pegawai}">
+											<li th:text="${jabatan_pegawai.getJabatan().nama}"></li>
+										</ul></td>
+									</tr>
+									<tr>
+										<td><p>Gaji</p></td>
+										<td><p th:text="'Rp' + ${gajiTermuda}"></p></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<br>
+				</div>
+				
+				<div class="col-sm-6">
+					<div class="card">
+						<div class="card-header">
+							<h2>Data Pegawai Tertua</h2>
+						</div>
+						<div class="card-body">
+							<table class="table">
+								<tbody>
+									<tr>
+										<td><p>NIP</p></td>
+										<td><p th:text="${pegawaiTertua.nip}"></p></td>
+									</tr>
+									<tr>
+										<td><p>Nama</p></td>
+										<td><p th:text="${pegawaiTertua.nama}"></p></td>
+									</tr>
+									<tr>
+										<td><p>Tempat Lahir</p></td>
+										<td><p th:text="${pegawaiTertua.tempat_lahir}"></p></td>
+									</tr>
+									<tr>
+										<td><p>Tanggal Lahir</p></td>
+										<td><p th:text="${pegawaiTertua.tanggal_lahir}"></p></td>
+									</tr>
+									<tr>
+										<td><p>Tahun Masuk</p></td>
+										<td><p th:text="${pegawaiTertua.tahun_masuk}"></p></td>
+									</tr>
+									<tr>
+										<td><p>Nama Instansi</p></td>
+										<td><p th:text="${pegawaiTertua.instansi.nama}"></p></td>
+									</tr>
+									<tr>
+										<td><p>Jabatan</p></td>
+										<td><ul th:each="jabatan_pegawai,iterationStatus : *{pegawaiTertua.jabatan_pegawai}">
+											<li th:text="${jabatan_pegawai.getJabatan().nama}"></li>
+										</ul></td>
+									</tr>
+									<tr>
+										<td><p>Gaji</p></td>
+										<td><p th:text="'Rp' + ${gajiTertua}"></p></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<br>
+			</div>
+			<form><input type="button" class="btn btn-danger" value="Back" onclick="history.back()"></form>
+			<footer th:replace="fragments/fragment :: footer"></footer>
+		</div>
+		
+		<script th:replace="fragments/fragment :: script"></script>
+	</body>
+</html>
