@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
+		<title>Tambah Jabatan</title>
 		<object th:include="fragments/fragment :: css" th:remove="tag"></object>
 		<object th:include="fragments/fragment :: js" th:remove="tag"></object>
 	</head>
@@ -8,7 +9,7 @@
 		<nav th:replace="fragments/fragment :: navbar"></nav>
 		<br>
 		
-		<div class="container-fluid">
+		<div class="container">
 			<div class="col-md-12">
 				<div class="card">
 					<div class="card-header">
@@ -21,17 +22,17 @@
 								<tbody>
 									<tr>
 										<td><p>Nama</p><td>
-										<td><input type="text" name="nama" />
+										<td><input type="text" name="nama" class="form-control" />
 										</td>
 									</tr>
 									<tr>
 										<td><p>Deskripsi</p><td>
-										<td><input type="text" name="deskripsi" />
+										<td><input type="text" name="deskripsi" class="form-control" />
 										</td>
 									</tr>
 									<tr>
 										<td><p>Gaji Pokok</p><td>
-										<td><input type="number" name="gaji_pokok" />
+										<td><input type="number" name="gaji_pokok" class="form-control" />
 										</td>
 									</tr>
 									<tr>

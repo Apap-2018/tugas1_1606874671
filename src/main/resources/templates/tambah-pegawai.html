@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 	<head>
+		<title>Tambah Pegawai</title>
 		<object th:include="fragments/fragment :: css" th:remove="tag"></object>
 		<object th:include="fragments/fragment :: js" th:remove="tag"></object>
 	</head>
@@ -8,44 +9,92 @@
 		<nav th:replace="fragments/fragment :: navbar"></nav>
 		<br>
 		
-		<div class="container-fluid">
-			<div class="col-md-6">
+		<div class="container">
+			<div class="col-md-12">
 				<div class="card">
-					<br>
 					<div class="card-header">
-						<h1>Tambah Jabatan</h1>
+						<h1>Tambah Pegawai</h1>
 					</div>
+					<br>
 					<div class="card-body">
-						<form th:action="@{/jabatan/tambah}" th:object="${jabatan}" method="POST">
-							<table>
+						<table class="table">
+							<form th:action="@{/pegawai/tambah}" th:object="${pegawai}" method="POST">
 								<tbody>
 									<tr>
-										<td><p>Nama<p><td>
-										<td><input type="text" name="nama" />
+										<td><p>Nama</p><td>
+										<td><input type="text" name="nama" class="form-control" />
 										</td>
 									</tr>
 									<tr>
-										<td><p>Nama<p><td>
-										<td><input type="text" name="deskripsi" />
+										<td><p>Tempat Lahir</p><td>
+										<td><input type="text" name="tempat_lahir" class="form-control" />
 										</td>
 									</tr>
 									<tr>
-										<td><p>Nama<p><td>
-										<td><input type="text" name="gajiPokok" />
+										<td><p>Tanggal Lahir</p><td>
+										<td><input type="date" name="tanggal_lahir" class="form-control" />
 										</td>
 									</tr>
-								</tbody>
-							</table>
-						</form>
-					</div>
-					<div class="card-footer">
-						<div class="row">
-						<button type="submit" class="btn btn-primary">Simpan</button></td>
-						<form><input type="button" class="btn btn-danger" value="Back" onclick="history.back()"></form>
-						</div>
+									<tr>
+										<td><p>Tahun Masuk</p><td>
+										<td><input type="text" name="tahun_masuk" class="form-control" />
+										</td>
+									</tr>
+									<tr>
+										<td><p>Provinsi</p><td>
+										<td>
+											<select th:value="${semuaProvinsi}" name="provinsi" id="provinsi" class="form-control">
+												<option value="">Pilih Provinsi</option>
+												<option th:each="provinsi : ${semuaProvinsi}"
+													th:value="${provinsi.getId()}"
+													th:text="${provinsi.getNama()}">
+												</option>	
+											</select>
+										</td>
+									</tr>
+									<tr>
+										<td><p>Instansi</p><td>
+										<td>
+											<select th:value="${instansi}" name="instansi" id="instansi" required="required" class="form-control">
+												<option disabled="disabled" selected="selected">Pilih Instansi</option>
+											</select>
+										</td>
+									</tr>
+									
+									
+										
+									<tr>
+										<td><button type="submit" name= "save" class="btn btn-primary">Simpan</button></td>
+									</tr>
+								</tbody>	
+							</form>
+						</table>
 					</div>
 				</div>
+				<br>
+				<form><input type="button" class="btn btn-danger" value="Back" onclick="history.back()"></form>
 			</div>
 		</div>
+		
+		<script>
+		    $('#provinsi').change(
+		        function() {
+		            $.getJSON("/provinsi/instansi", {
+		                id : $(this).val(),
+		                ajax : 'true'
+		            }, function(data) {
+		                var html = '<option value="">Pilih Instansi</option>';
+		                var len = data.length;
+		                for (var i = 0; i < len; i++) {
+		                    html += '<option value="' +data[i].id + '">'
+		                            + data[i].nama + '</option>';
+		                }
+		                html += '</option>';
+		                $('#instansi').html(html);
+		            });
+		        });
+		</script>
+		
+		<script th:replace="fragments/fragment :: script"></script>
 	</body>
 </html>

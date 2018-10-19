@@ -12,4 +12,5 @@ import com.apap.tugas1.model.ProvinsiModel;
  */
 @Repository
 public interface ProvinsiDB extends JpaRepository<ProvinsiModel, Long> {
+	ProvinsiModel findById(long id);
 }

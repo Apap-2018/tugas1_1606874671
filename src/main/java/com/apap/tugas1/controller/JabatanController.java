@@ -1,12 +1,16 @@
 package com.apap.tugas1.controller;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.apap.tugas1.model.JabatanModel;
+import com.apap.tugas1.model.JabatanPegawaiModel;
+import com.apap.tugas1.model.PegawaiModel;
 import com.apap.tugas1.service.JabatanService;
 
 @Controller
@@ -24,7 +30,7 @@ public class JabatanController {
 	private JabatanModel jabatan;
 	
 	@RequestMapping(value = "/jabatan/lihat", method = RequestMethod.GET)
-	public String lihatJabatan(@RequestParam(value="id") String id, Model model) {
+	public String lihatJabatan(@RequestParam(value="id", required = true) String id, Model model) {
 		long longId = Long.parseLong(id);
 		jabatan = jabatanService.getJabatanDetailById(longId);
 		model.addAttribute("jabatan", jabatan);
@@ -32,29 +38,29 @@ public class JabatanController {
 		NumberFormat formatter = NumberFormat.getCurrencyInstance();
 		formatter.setMinimumIntegerDigits(gaji_pokok);
 		model.addAttribute("gaji_pokok", gaji_pokok);
-		
-		model.addAttribute("title", "Lihat Jabatan");
 		return "lihat-jabatan";
 	}
 	
 	@RequestMapping(value = "/jabatan/tambah", method = RequestMethod.GET)
 	private String tambahJabatan(Model model) {
 		model.addAttribute("jabatan", new JabatanModel());
-		model.addAttribute("title", "Tambah Pegawai");
 		return "tambah-jabatan";
 	}
 	
 	@RequestMapping(value = "/jabatan/tambah", method = RequestMethod.POST, params={"save"})
-	private String tambahJabatanSimpan(@ModelAttribute JabatanModel jabatan) {
+	private String tambahJabatanSimpan(@ModelAttribute JabatanModel jabatan, Model model) {
 		jabatanService.addJabatan(jabatan);
+		String header = "Jabatan " + jabatan.getNama() + " berhasil ditambah";
+		String comment = "Database jabatan sudah diupdate";
+		model.addAttribute("header", header);
+		model.addAttribute("comment", comment);
 		return "tambah";
 	}
 	
 	@RequestMapping(value = "/jabatan/ubah/{id}", method = RequestMethod.GET)
-	private String ubah(@PathVariable(value ="id") String id, Model model) {
+	private String ubah(@PathVariable(value ="id", required = true) String id, Model model) {
 		JabatanModel newJabatan = jabatanService.getJabatanDetailById(Long.parseLong(id));
 		model.addAttribute("jabatan", newJabatan);
-		model.addAttribute("title", "Ubah Jabatan");
 		return "ubah-jabatan";
 	}
 	
@@ -77,7 +83,7 @@ public class JabatanController {
 	}
 	
 	@RequestMapping("/jabatan/hapus/{id}")
-	public String hapusJabatan(@PathVariable(value ="id") String id, Model model) {
+	public String hapusJabatan(@PathVariable(value ="id", required = true) String id, Model model) {
 		String errorMessage = "";
 		long longId = Long.parseLong(id);
 		model.addAttribute("title", "Hapus Jabatan");

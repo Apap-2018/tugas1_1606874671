@@ -40,7 +40,7 @@
 									</tr>
 									<tr>
 										<td><p>Nama Instansi</p></td>
-										<td><p th:text="${pegawaiTermuda.instansi.nama}"></p></td>
+										<td><p th:text="${pegawaiTermuda.instansi.nama} + ' - ' + ${pegawaiTermuda.instansi.provinsi.nama}"></p></td>
 									</tr>
 									<tr>
 										<td><p>Jabatan</p></td>
@@ -89,7 +89,7 @@
 									</tr>
 									<tr>
 										<td><p>Nama Instansi</p></td>
-										<td><p th:text="${pegawaiTertua.instansi.nama}"></p></td>
+										<td><p th:text="${pegawaiTertua.instansi.nama} + ' - ' + ${pegawaiTertua.instansi.provinsi.nama}"></p></td>
 									</tr>
 									<tr>
 										<td><p>Jabatan</p></td>

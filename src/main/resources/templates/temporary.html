@@ -1,24 +1,17 @@
-							<form th:action="@{/jabatan/lihat}" method="GET">
-								<div class="form-group">
-									<label for="nama">Pilih Jabatan</label>
-									<div th:each="jabatan : ${semuaJabatan}">
-										<select class="form-control" id="nama" name="jabatan.id">
-										
-											<option th:text="${jabatan.nama}"></option>
-										
-										</select>
-									</div>
-									<br>
-								</div>
-								<button type="submit" class="btn btn-primary">Lihat</button>
-							</form>
-							
-							
-							
-List<JabatanModel> semuaJabatan = jabatanService.getAllJabatan();
-		
-		for(int i=0; i < semuaJabatan.size(); i++) {
-			System.out.println(semuaJabatan.get(i));
-		}
-		
-		model.addAttribute("semuaJabatan", semuaJabatan);
+<tr th:each="jabatan,iterationStatus : *{jabatan_pegawai}">
+										<td><p>Jabatan</p><td>
+										<td>
+											<select name="jabatan_pegawai" class="form-control">
+												<option value="">Pilih Jabatan</option>
+												<option th:each="jabatan : ${semuaJabatan}"
+													th:field="*{jabatan[__${rowStat.index}__]}"
+													th:value="${jabatan.id}"
+													th:text="${jabatan.nama}"></option>
+											</select>
+											<button type="submit" name="removeRow"
+												th:value="${rowStat.index}"
+												th:style="${rowStat.count} == 1 ? 'display: none;' : ''">X
+												</button></td>
+										</td>
+										<button type="submit" name="addRow">Tambah Jabatan Lainnya</button>
+									</tr>
