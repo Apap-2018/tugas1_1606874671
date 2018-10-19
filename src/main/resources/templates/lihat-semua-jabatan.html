@@ -15,6 +15,7 @@
 				    <tr>
 				        <th>Nama</th>
 				        <th>Deskripsi</th>
+				        <th>Jumlah Pegawai</th>
 				        <th>Gaji Pokok</th>
 				    </tr>
 				</thead>
@@ -23,6 +24,7 @@
 					    <tr>
 					        <td><p th:text="${jabatan.nama}"></p></td>
 					        <td><p th:text="${jabatan.deskripsi}"></p></td>
+					        <td><p th:text="${jabatan.jabatan_pegawai.size()}"></p></td>
 					        <td><p th:text="${jabatan.gaji_pokok}"></p></td>
 					    </tr>
 				    </div>

@@ -96,7 +96,6 @@ public class PegawaiServiceImp implements PegawaiService {
 				nip = nip.substring(0, 14) + digitSendiri;
 			}
 		}
-		
 		return nip;
 	}
 }

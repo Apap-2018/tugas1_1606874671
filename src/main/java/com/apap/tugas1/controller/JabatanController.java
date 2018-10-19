@@ -38,11 +38,16 @@ public class JabatanController {
 		NumberFormat formatter = NumberFormat.getCurrencyInstance();
 		formatter.setMinimumIntegerDigits(gaji_pokok);
 		model.addAttribute("gaji_pokok", gaji_pokok);
+		
+		for(int i = 0; i < jabatan.getJabatan_pegawai().size(); i++) {
+			System.out.println(jabatan.getJabatan_pegawai().get(i).getPegawai().getNama());
+		}
 		return "lihat-jabatan";
 	}
 	
 	@RequestMapping(value = "/jabatan/tambah", method = RequestMethod.GET)
 	private String tambahJabatan(Model model) {
+		model.addAttribute("tambahJabatan", "tambahJabatan");
 		model.addAttribute("jabatan", new JabatanModel());
 		return "tambah-jabatan";
 	}
@@ -80,6 +85,7 @@ public class JabatanController {
 	
 	@RequestMapping("/jabatan/viewall")
 	public String viewAll(Model model) {
+		model.addAttribute("lihatSemuaJabatan", "lihatSemuaJabatan");
 		List<JabatanModel> semuaJabatan = jabatanService.getAllJabatan();
 		model.addAttribute("semuaJabatan", semuaJabatan);
 		model.addAttribute("title", "View All Jabatan");
