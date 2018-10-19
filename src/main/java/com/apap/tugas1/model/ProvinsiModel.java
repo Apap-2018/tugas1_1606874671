@@ -16,6 +16,8 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 /**
  * 
  * @author Muhammad Aulia Adil
@@ -39,6 +41,7 @@ public class ProvinsiModel implements Serializable{
 	private double presentase_tunjangan;
 	
 	@OneToMany(mappedBy = "provinsi", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JsonIgnore
 	private List<InstansiModel> instansi;
 
 	public long getId() {

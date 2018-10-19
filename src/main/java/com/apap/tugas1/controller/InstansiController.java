@@ -15,11 +15,17 @@ import com.apap.tugas1.service.InstansiService;
 import com.apap.tugas1.service.ProvinsiService;
 
 @Controller
-public class ProvinsiController {
+public class InstansiController {
     @Autowired
     private ProvinsiService provinsiService;
     
     @Autowired
     private InstansiService instansiService;
 
+	@RequestMapping(value = "/instansi/getFromProvinsi", method = RequestMethod.GET)
+	@ResponseBody
+	public List<InstansiModel> getInstansi(@RequestParam (value = "provinsiId", required = true) long id) {
+	    ProvinsiModel provinsi = provinsiService.getProvinsiDetailById(id);
+		return instansiService.getInstansiFromProvinsi(provinsi);
+	}
 }

@@ -9,36 +9,34 @@
 		<nav th:replace="fragments/fragment :: navbar"></nav>
 		<br>
 		
-		<div class="container-fluid">
+		<div class="container">
 			<div class="row">
-				<div class="col-md-6">
+				<div class="col-md-12">
 					<div class="card">
 						<div class="card-header">
 							<h2>Ubah Jabatan</h2>
 						</div>
 						<div class="card-body">
 							<form th:action="@{/jabatan/ubah}" th:object="${jabatan}" method="POST">
-							<input type="hidden" th:field="*{id}" />
-							
-							<table class="table">
-								<tbody>
-									<tr>
-										<td><p>Nama</p></td>
-										<td><input type="text" name="nama" th:value ="${jabatan.getNama()}" /></td>
-									</tr>
-									<tr>
-										<td><p>Deskripsi</p></td>
-										<td><input type="text" name="deskripsi" th:value ="${jabatan.getDeskripsi()}" /></td>
-									</tr>
-									<tr>
-										<td><p>Gaji Pokok</p></td>
-										<td><input type="number" name="gaji_pokok" th:value ="${jabatan.getGaji_pokok()}" /></td>
-									</tr>
-									<tr>
-										<button type="submit">Submit</button>
-									</tr>
-								</tbody>
-							</table>
+								<input type="hidden" th:field="*{id}" />
+								<table class="table">
+									<tbody>
+										<tr>
+											<td><p>Nama</p></td>
+											<td><input type="text" name="nama" th:value ="${jabatan.getNama()}" /></td>
+										</tr>
+										<tr>
+											<td><p>Deskripsi</p></td>
+											<td><input type="text" name="deskripsi" th:value ="${jabatan.getDeskripsi()}" /></td>
+										</tr>
+										<tr>
+											<td><p>Gaji Pokok</p></td>
+											<td><input type="number" name="gaji_pokok" th:value ="${jabatan.getGaji_pokok()}" /></td>
+										</tr>
+									</tbody>
+								</table>
+								<br>
+								<button type="submit" class="btn btn-primary">Submit</button>
 							</form>
 						</div>
 					</div>

@@ -63,12 +63,13 @@ public class PegawaiModel implements Serializable{
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_instansi", referencedColumnName = "id", nullable = false)
 	@OnDelete(action = OnDeleteAction.NO_ACTION)
-	@Size(max = 20)
 	@JsonIgnore
 	private InstansiModel instansi;
 	
 	@OneToMany(mappedBy = "pegawai", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	private List<JabatanPegawaiModel> jabatan_pegawai;
+	
+	private int gaji;
 
 	public long getId() {
 		return id;
@@ -132,5 +133,13 @@ public class PegawaiModel implements Serializable{
 
 	public void setJabatan_pegawai(List<JabatanPegawaiModel> jabatan_pegawai) {
 		this.jabatan_pegawai = jabatan_pegawai;
+	}
+
+	public int getGaji() {
+		return gaji;
+	}
+
+	public void setGaji(int gaji) {
+		this.gaji = gaji;
 	}
 }

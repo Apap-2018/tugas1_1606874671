@@ -35,7 +35,7 @@
 							<form th:action="@{/jabatan/lihat}" method="GET">
 								<label name="id">Pilih Jabatan</label>
 								<select name="id" class="form-control">
-									<option value="">Pilih jabatan</option>
+									<option disabled="disabled" selected="selected">Pilih jabatan</option>
 									<option th:each="jabatan : ${semuaJabatan}"
 										th:value="${jabatan.getId()}"
 										th:text="${jabatan.getNama()}">
@@ -52,7 +52,7 @@
 							<form th:action="@{/pegawai/termuda-tertua}" method="GET">
 								<label name="id">Pilih Instansi</label>
 								<select name="id" class="form-control">
-									<option value="">Pilih Instansi</option>
+									<option disabled="disabled" selected="selected">Pilih Instansi</option>
 									<option th:each="instansi : ${semuaInstansi}"
 										th:value="${instansi.getId()}"
 										th:text="${instansi.getNama()} + ' - ' + ${instansi.getProvinsi().getNama()}">

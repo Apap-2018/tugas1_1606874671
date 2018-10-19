@@ -40,7 +40,7 @@
 								</tr>
 								<tr>
 									<td><p>Nama Instansi</p></td>
-									<td><p th:text="${pegawai.instansi.nama}"></p></td>
+									<td><p th:text="${pegawai.instansi.nama} + ' - ' + ${pegawai.instansi.provinsi.nama}"></p></td>
 								</tr>
 								<tr>
 									<td><p>Jabatan</p></td>
@@ -52,13 +52,13 @@
 								</tr>
 								<tr>
 									<td><p>Gaji</p></td>
-									<td><p th:text="'Rp' + ${gaji}"></p></td>
+									<td><p th:text="'Rp' + ${pegawai.gaji}"></p></td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
 					<div class="card-footer">
-						<form th:action="@{/pegawai/ubah/} + ${pegawai.id}">
+						<form th:action="@{/pegawai/ubah/} + ${pegawai.nip}">
 							<button type="submit" class="btn btn-primary">Ubah</button>
 						</form>
 					</div>

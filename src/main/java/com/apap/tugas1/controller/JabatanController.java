@@ -65,11 +65,15 @@ public class JabatanController {
 	}
 	
 	@RequestMapping(value = "/jabatan/ubah", method = RequestMethod.POST)
-	private String ubahJabatanSubmit(@ModelAttribute JabatanModel jabatan) {
+	private String ubahJabatanSubmit(@ModelAttribute JabatanModel jabatan, Model model) {
 		JabatanModel newJabatan = jabatanService.getJabatanDetailById(jabatan.getId());
 		newJabatan.setNama(jabatan.getNama());
 		newJabatan.setDeskripsi(jabatan.getDeskripsi());
 		newJabatan.setGaji_pokok(jabatan.getGaji_pokok());
+		String header = "Jabatan " + jabatan.getNama() + " berhasil diubah";
+		String comment = "Database jabatan sudah diupdate";
+		model.addAttribute("header", header);
+		model.addAttribute("comment", comment);
 		jabatanService.addJabatan(newJabatan);
 		return "ubah";	
 	}

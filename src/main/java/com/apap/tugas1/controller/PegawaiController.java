@@ -1,19 +1,20 @@
 package com.apap.tugas1.controller;
 
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,8 +63,8 @@ public class PegawaiController {
 	public String viewPegawai(@RequestParam(value="nip", required = true) String nip, Model model) {
 		PegawaiModel pegawai = pegawaiService.getPegawaiDetailByNip(nip);
 		model.addAttribute("pegawai", pegawai);
-		int gaji = pegawaiService.getGaji(pegawai);	
-		model.addAttribute("gaji", gaji);
+		int gaji = pegawaiService.getGaji(pegawai);
+		pegawai.setGaji(gaji);
 		return "lihat-pegawai";
 	}
 	
@@ -75,48 +76,54 @@ public class PegawaiController {
 	}
 	
 	@RequestMapping(value = "/pegawai/tambah", method = RequestMethod.GET)
-	private String add(Model model) {
-		List<ProvinsiModel> semuaProvinsi = provinsiService.getAllProvinsi();
-		List<JabatanModel> semuaJabatan = jabatanService.getAllJabatan();
+	public String tambahPegawai (Model model) {
 		PegawaiModel pegawai = new PegawaiModel();
 		pegawai.setJabatan_pegawai(new ArrayList<JabatanPegawaiModel>());
-//		JabatanPegawaiModel jabatanPegawai = new JabatanPegawaiModel();
-//		
-//		pegawai.getJabatan_pegawai().add(jabatanPegawai);
+		pegawai.getJabatan_pegawai().add(new JabatanPegawaiModel());
+		
+		List<ProvinsiModel> semuaProvinsi = provinsiService.getAllProvinsi();
+		List<JabatanModel> semuaJabatan = jabatanService.getAllJabatan();
+		List<InstansiModel> semuaInstansi = instansiService.getAllInstansi();
 		
 		model.addAttribute("pegawai", pegawai);
-		model.addAttribute("jabatan_pegawai", pegawai.getJabatan_pegawai());
 		model.addAttribute("semuaProvinsi", semuaProvinsi);
 		model.addAttribute("semuaJabatan", semuaJabatan);
+		model.addAttribute("semuaInstansi", semuaInstansi);
 		return "tambah-pegawai";
 	}
 	
-	@RequestMapping(value = "/pegawai/tambah", method = RequestMethod.POST)
-	private String addPegawaiSubmit(@ModelAttribute PegawaiModel pegawai, Model model) {
-		pegawaiService.addPegawai(pegawai);
-		String header = "Pegawai " + pegawai.getNama() + " berhasil ditambah";
-		String comment = "Database jabatan sudah diupdate";
-		model.addAttribute("header", header);
-		model.addAttribute("comment", comment);
-		return "tambah";
-	}
-	
-	@RequestMapping(value="/pegawai/tambah/", params={"addRow"}, method = RequestMethod.POST)
+	@RequestMapping(value="/pegawai/tambah", params={"addRow"}, method = RequestMethod.POST)
 	public String addRow(PegawaiModel pegawai, BindingResult bindingResult, Model model) {
 		if (pegawai.getJabatan_pegawai() == null) {
 			pegawai.setJabatan_pegawai(new ArrayList<JabatanPegawaiModel>());
 		}
 		pegawai.getJabatan_pegawai().add(new JabatanPegawaiModel());
 	    model.addAttribute("pegawai", pegawai);
-	    return "tambah_pegawai";
+	    return "tambah-pegawai";
 	}
 	
-	@RequestMapping(value="/pegawai/tambah/", params={"removeRow"}, method = RequestMethod.POST)
+	@RequestMapping(value="/pegawai/tambah", params={"removeRow"}, method = RequestMethod.POST)
 	public String removeRow(PegawaiModel pegawai, BindingResult bindingResult, HttpServletRequest req, Model model) {
 	   Integer rowId = Integer.valueOf(req.getParameter("removeRow"));
 	   pegawai.getJabatan_pegawai().remove(rowId.intValue());
-	   model.addAttribute("pilot", pegawai);
-	   return "tambah_pegawai";
+	   model.addAttribute("pegawai", pegawai);
+	   return "tambah-pegawai";
+	}
+	
+
+	@RequestMapping(value = "/pegawai/tambah", method = RequestMethod.POST)
+	private String addPegawaiSubmit(@ModelAttribute PegawaiModel pegawai, Model model) {
+		String nip = pegawaiService.generateNip(pegawai);
+		pegawai.setNip(nip);
+		int gaji = pegawaiService.getGaji(pegawai);
+		pegawai.setGaji(gaji);
+		
+		pegawaiService.addPegawai(pegawai);
+		String header = "Pegawai " + pegawai.getNama() + " berhasil ditambah";
+		String comment = "Database jabatan sudah diupdate";
+		model.addAttribute("header", header);
+		model.addAttribute("comment", comment);
+		return "tambah";
 	}
 	
 	@RequestMapping(value="/pegawai/termuda-tertua", method = RequestMethod.GET)
@@ -135,20 +142,19 @@ public class PegawaiController {
 		
 		long millis=System.currentTimeMillis();  
 		Date today = new Date(millis);  
-		int age;
-		Date birthday;
 		
 		for(int i = 0; i < semuaPegawai.size(); i++) {
 			pegawaiLoop = semuaPegawai.get(i);
-			birthday = pegawaiLoop.getTanggal_lahir();
-			age = today.getYear() - birthday.getYear();
+			Date birthday = pegawaiLoop.getTanggal_lahir();
+			@SuppressWarnings("deprecation")
+			int age = today.getYear() - birthday.getYear();
 			if(age > tertua) {
 				tertua = age;
-				pegawaiTermuda = pegawaiLoop;
+				pegawaiTertua = pegawaiLoop;
 			}
 			if(age < termuda) {
 				termuda = age;
-				pegawaiTertua = pegawaiLoop;
+				pegawaiTermuda = pegawaiLoop;
 			}
 		}
 		
@@ -160,22 +166,30 @@ public class PegawaiController {
 	}
 	
 	@RequestMapping(value = "/pegawai/ubah/{nip}", method = RequestMethod.GET)
-	private String updatePegawai(@RequestParam(value ="nip") String nip, Model model) {
+	private String updatePegawai(@PathVariable(value ="nip", required = true) String nip, Model model) {
 		PegawaiModel newPegawai = pegawaiService.getPegawaiDetailByNip(nip);
 		model.addAttribute("pegawai", newPegawai);
 		return "ubah-pegawai";
 	}
 	
-	@RequestMapping(value = "/pegawai/update", method = RequestMethod.POST)
-	private String updatePegawaiSubmit(@ModelAttribute PegawaiModel pegawai) {
+	@RequestMapping(value = "/pegawai/ubah", method = RequestMethod.POST)
+	private String updatePegawaiSubmit(@ModelAttribute PegawaiModel pegawai, Model model) {
 		PegawaiModel newPegawai = pegawaiService.getPegawaiDetailByNip(pegawai.getNip());
+		
 		newPegawai.setNama(pegawai.getNama());
 		newPegawai.setTempat_lahir(pegawai.getTempat_lahir());
 		newPegawai.setTanggal_lahir(pegawai.getTanggal_lahir());
 		newPegawai.setTahun_masuk(pegawai.getTahun_masuk());
 		newPegawai.setTempat_lahir(pegawai.getTempat_lahir());
+		String nip = pegawaiService.generateNip(newPegawai);
+		newPegawai.setNip(nip);
 		pegawaiService.addPegawai(newPegawai);
-		return "update";	
+		pegawaiService.deletePegawai(pegawaiService.getPegawaiDetailByNip(pegawai.getNip()));
+		String header = "Pegawai " + pegawai.getNama() + " berhasil ditambah";
+		String comment = "Database jabatan sudah diupdate";
+		model.addAttribute("header", header);
+		model.addAttribute("comment", comment);
+		return "ubah";	
 	}
 	
 	@RequestMapping("/pegawai/delete/{id}")
