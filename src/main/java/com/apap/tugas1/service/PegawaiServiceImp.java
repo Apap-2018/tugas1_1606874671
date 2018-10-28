@@ -1,18 +1,20 @@
 package com.apap.tugas1.service;
 
-import java.text.MessageFormat;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.apap.tugas1.model.InstansiModel;
 import com.apap.tugas1.model.JabatanModel;
 import com.apap.tugas1.model.PegawaiModel;
-import com.apap.tugas1.repository.InstansiDB;
 import com.apap.tugas1.repository.PegawaiDB;
-import com.apap.tugas1.repository.ProvinsiDB;
 
 @Service
 @Transactional
@@ -20,12 +22,6 @@ public class PegawaiServiceImp implements PegawaiService {
 
 	@Autowired
 	private PegawaiDB pegawaiDb;
-	
-	@Autowired
-	private ProvinsiDB provinsiDb;
-	
-	@Autowired
-	private InstansiDB instansiDb;
 	
 	@Override
 	public void addPegawai(PegawaiModel pegawai) {
@@ -56,8 +52,8 @@ public class PegawaiServiceImp implements PegawaiService {
 	public int getGaji(PegawaiModel pegawai) {
 		JabatanModel tempJabatan = null;
 		double gajiTerbesar = 0;
-		for(int i = 0; i < pegawai.getJabatan_pegawai().size(); i++) {
-			tempJabatan = pegawai.getJabatan_pegawai().get(i).getJabatan();
+		for(int i = 0; i < pegawai.getJabatan().size(); i++) {
+			tempJabatan = pegawai.getJabatan().get(i);
 			if(tempJabatan.getGaji_pokok() > gajiTerbesar) {
 				gajiTerbesar = tempJabatan.getGaji_pokok();
 			}
@@ -70,32 +66,66 @@ public class PegawaiServiceImp implements PegawaiService {
 	@Override
 	public String generateNip(PegawaiModel pegawai) {
 		
+		DateFormat df = new SimpleDateFormat("ddMMyy");
+		Date tglLahir = pegawai.getTanggal_lahir();
+		String tglLahirFormatted = df.format(tglLahir);
+		System.out.println("date->"+tglLahirFormatted);
+		
 		String idInstansi = "" + pegawai.getInstansi().getId();
-		Date tanggalLahir = pegawai.getTanggal_lahir();
-		
-		int hari = tanggalLahir.getDay() + 1;
-		int bulan = tanggalLahir.getMonth() + 1;
-		String sHari = "" + hari;
-		if(hari < 10) {
-			sHari = "0" + sHari;
-		}
-		
-		String sBulan = "" + bulan;
-		if(bulan < 10) {
-			sBulan = "0" + sBulan;
-		}
-				
-		System.out.println("hari = " + sHari + " bulan = " + sBulan + " tahun = " + tanggalLahir.getYear());
-		String tahunMasuk = pegawai.getTahun_masuk();
-		String nip = idInstansi + sHari + sBulan + tanggalLahir.getYear() + tahunMasuk + "01";
-		
-		for(int i = 0; i < pegawaiDb.findAll().size(); i++) {
-			if(pegawaiDb.findAll().get(i).getNip().substring(0, 14).equalsIgnoreCase(nip)) {
-				int digitLain = Integer.parseInt(pegawaiDb.findAll().get(i).getNip().substring(14, 16));
-				int digitSendiri = digitLain + 1;
-				nip = nip.substring(0, 14) + digitSendiri;
+		int idAkhir = 0;
+		for (PegawaiModel peg : this.getAllPegawai()) {
+			if (peg.getTanggal_lahir().equals(pegawai.getTanggal_lahir()) && peg.getTahun_masuk().equals(pegawai.getTahun_masuk())) {
+				idAkhir+=1;
 			}
 		}
+		idAkhir+=1;
+		
+		String kodeUnik;
+		if(idAkhir<10) kodeUnik = "0" + idAkhir;
+		else kodeUnik = "" + idAkhir;
+		
+		String tahunMasuk = pegawai.getTahun_masuk();
+		String nip = idInstansi + tglLahirFormatted + tahunMasuk + kodeUnik;
+		
 		return nip;
 	}
+
+	@Override
+	public List<PegawaiModel> getPegawaiByProvinsi(long idProvinsi) {
+		List<PegawaiModel> hasil = new ArrayList<>();
+		for(PegawaiModel pegawai : pegawaiDb.findAll()) {
+			if (pegawai.getInstansi().getProvinsi().getId() == idProvinsi) hasil.add(pegawai);
+		}
+		return hasil;
+	}
+	
+	@Override
+	public List<PegawaiModel> getPegawaiByInstansi(InstansiModel instansi) {
+		return pegawaiDb.findByInstansi(instansi);
+	}
+	
+	@Override 
+	public List<PegawaiModel> getPegawaiByInstansiAndJabatan(InstansiModel instansi, JabatanModel jabatan) {
+		List<PegawaiModel> hasil = new ArrayList<>();
+		for(PegawaiModel pegawai : pegawaiDb.findByInstansi(instansi)) {
+			if (pegawai.getJabatan().contains(jabatan)) hasil.add(pegawai);
+		}
+		return hasil;
+	}
+	
+	@Override
+	public List<PegawaiModel> getPegawaiByProvinsiAndJabatan(long idProvinsi, JabatanModel jabatan){
+		List<PegawaiModel> hasil = new ArrayList<>();
+		
+		for(PegawaiModel pegawai : this.getPegawaiByProvinsi(idProvinsi)) {
+			if (pegawai.getJabatan().contains(jabatan)) hasil.add(pegawai);
+		}
+		return hasil;
+	}
+	
+	@Override
+	public List<PegawaiModel> getPegawaiByJabatan(JabatanModel jabatan){
+		return pegawaiDb.findByJabatan(jabatan);
+	}
+	
 }

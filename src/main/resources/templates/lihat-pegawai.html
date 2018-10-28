@@ -44,8 +44,8 @@
 								</tr>
 								<tr>
 									<td><p>Jabatan</p></td>
-									<td><ul th:each="jabatan_pegawai,iterationStatus : *{pegawai.jabatan_pegawai}">
-										<li th:text="${jabatan_pegawai.getJabatan().nama}"></li>
+									<td><ul th:each="jabatan,iterationStatus : *{pegawai.jabatan}">
+										<li th:text="${jabatan.nama}"></li>
 									</ul></td>
 								</tr>
 								<tr>

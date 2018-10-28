@@ -18,28 +18,32 @@
 	</head>
 
 	<body>
-		<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
-			<a th:fragment="navbar-brand" class="navbar-brand" href="#" th:text="SIPEG"></a>
-			<div class="collapse navbar-collapse" id="navbarSupportedContent">
-				<ul class="navbar-nav mr-auto">
-					<li class="nav-item" th:classappend="${home} ? 'active' : ''">
-						<a class="nav-link" th:href="@{/}">Home</a>
-					</li>
-					<li class="nav-item" th:classappend="${tambahPegawai} ? 'active' : ''">
-						<a class="nav-link" th:href="@{/pegawai/tambah}">Tambah Pegawai</a>
-					</li>
-					<li class="nav-item" th:classappend="${tambahJabatan} ? 'active' : ''">
-						<a class="nav-link" th:href="@{/jabatan/tambah}">Tambah Jabatan</a>
-					</li>
-					<li class="nav-item" th:classappend="${cariPegawai} ? 'active' : ''">
-						<a class="nav-link" th:href="@{/pegawai/cari}">Cari Pegawai</a>
-					</li>
-					<li class="nav-item" th:classappend="${lihatSemuaJabatan} ? 'active' : ''">
-						<a class="nav-link" th:href="@{/jabatan/viewall}">Lihat Semua Jabatan</a>
-					</li>
-				</ul>
-			</div>
-		</nav>
+		<div class="topnav" id="topnav">
+			<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark">
+				<div class="container">
+					<a th:fragment="navbar-brand" class="navbar-brand" href="#" th:text="SIPEG"></a>
+					<div class="collapse navbar-collapse" id="navbarSupportedContent">
+						<ul class="navbar-nav mr-auto">
+							<li class="nav-item" th:classappend="${home} ? 'active' : ''">
+								<a class="nav-link" th:href="@{/}">Home</a>
+							</li>
+							<li class="nav-item" th:classappend="${tambahPegawai} ? 'active' : ''">
+								<a class="nav-link" th:href="@{/pegawai/tambah}">Tambah Pegawai</a>
+							</li>
+							<li class="nav-item" th:classappend="${tambahJabatan} ? 'active' : ''">
+								<a class="nav-link" th:href="@{/jabatan/tambah}">Tambah Jabatan</a>
+							</li>
+							<li class="nav-item" th:classappend="${cariPegawai} ? 'active' : ''">
+								<a class="nav-link" th:href="@{/pegawai/cari}">Cari Pegawai</a>
+							</li>
+							<li class="nav-item" th:classappend="${lihatSemuaJabatan} ? 'active' : ''">
+								<a class="nav-link" th:href="@{/jabatan/viewall}">Lihat Semua Jabatan</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+		</div>
 		
 		<footer th:fragment="footer"> 
 			<br>

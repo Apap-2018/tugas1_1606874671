@@ -19,17 +19,17 @@
 						<form th:action="@{/pegawai/cari}" id="pegawaiForm" th:object="${pegawai}" method="POST">
 							<table class="table">
 								<tr>
-									<td><p>Provinsi</p></td>
+									<td><p>Provinsi</p><td>
 									<td>
 										<span th:if="*{instansi} == null">
 											<select  class="form-control" required="true" name="provinsi" id="provinsi" th:value="${semuaProvinsi}" form="pegawaiForm">
-												<option disabled="disabled" selected="selected" >Pilih Provinsi</option>
+										    	<option disabled="disabled" selected="selected">Pilih Provinsi</option>
 												<option th:each="provinsi : ${semuaProvinsi}" th:value="${provinsi.id}" th:text="${provinsi.nama}" ></option>
 										    </select>
 										</span>
 										<span th:unless="*{instansi} == null">
-											<select  class="form-control" required="true" name="provinsi" id="provinsi" th:value="*{instansi.provinsi}" form="pegawaiForm">
-										      <option th:each="provinsi : ${semuaProvinsi}" th:value="${provinsi.id}" th:text="${provinsi.nama}" th:selected="${provinsi.id} == *{instansi.provinsi.id}"></option>
+											<select  class="form-control" required="required" name="provinsi" id="provinsi" th:value="*{instansi.provinsi}" form="pegawaiForm">
+										      <option th:each="provinsi : ${listProvinsi}" th:value="${provinsi.id}" th:text="${provinsi.nama}" th:selected="${provinsi.id} == *{instansi.provinsi.id}"></option>
 										    </select>
 										</span>
 									</td>
@@ -39,13 +39,13 @@
 									<td>
 										<span th:if="*{instansi} == null">
 											<select class="form-control" th:value="*{instansi}" name="instansi" id="instansi" required="true"  form="pegawaiForm">
-						                    	<option disabled="disabled" selected="selected" >Pilih Instansi</option>
+						                    	<option disabled="disabled" selected="selected" value="" >Pilih Instansi</option>
 						                	</select>	
 										</span>
 										<span th:unless="*{instansi} == null">
 											<select class="form-control" th:value="*{instansi}" name="instansi" id="instansi" required="true"  form="pegawaiForm">
 							                    <option th:value="*{instansi.id}" selected="selected" th:text="*{instansi.nama}"></option>
-							                    <option th:each="instansi : ${semuaInstansi}" th:value="${instansi.id}" th:text="${instansi.nama}" ></option>
+							                    <option th:each="instansi : ${listInstansi}" th:value="${instansi.id}" th:text="${instansi.nama}" ></option>
 							                </select>	
 										</span>
 									</td>
@@ -54,8 +54,8 @@
 								<tr>
 									<td><p>Jabatan</p><td>
 									<td>
-		                                <span th:each="jabatan,iterationStatus : *{jabatan_pegawai}">
-			                                <select  class="form-control" required="true" name="jabatan_pegawai" id="jabatan">
+		                                <span th:each="jabatan,iterationStatus : *{jabatan}">
+			                                <select  class="form-control" required="true" name="jabatan" id="jabatan">
 			                                    <option disabled="disabled" selected="selected" >Pilih Jabatan
 			                                    </option>
 			                                    <option th:each="jabatan : ${semuaJabatan}"

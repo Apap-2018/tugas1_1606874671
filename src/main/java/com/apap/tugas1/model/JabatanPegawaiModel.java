@@ -2,6 +2,7 @@ package com.apap.tugas1.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -29,26 +30,26 @@ public class JabatanPegawaiModel implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@NotNull
-	private long id;
+	@Size (max = 20)
+	@Column (name= "id", nullable = false)
+	private long id_jabatan_pegawai;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_pegawai", referencedColumnName = "id", nullable = false)
-	@OnDelete(action = OnDeleteAction.NO_ACTION)
+	@JoinColumn(name="id_pegawai", referencedColumnName = "id", nullable = false)
 	@JsonIgnore
 	private PegawaiModel pegawai;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_jabatan", referencedColumnName = "id", nullable = false)
-	@OnDelete(action = OnDeleteAction.NO_ACTION)
+	@JoinColumn(name="id_jabatan", referencedColumnName = "id", nullable = false)
 	@JsonIgnore
 	private JabatanModel jabatan;
 	
 	public long getId() {
-		return id;
+		return id_jabatan_pegawai;
 	}
 
 	public void setId(long id) {
-		this.id = id;
+		this.id_jabatan_pegawai = id;
 	}
 
 	public PegawaiModel getPegawai() {

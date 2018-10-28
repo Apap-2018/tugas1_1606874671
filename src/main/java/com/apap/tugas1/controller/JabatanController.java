@@ -39,8 +39,8 @@ public class JabatanController {
 		formatter.setMinimumIntegerDigits(gaji_pokok);
 		model.addAttribute("gaji_pokok", gaji_pokok);
 		
-		for(int i = 0; i < jabatan.getJabatan_pegawai().size(); i++) {
-			System.out.println(jabatan.getJabatan_pegawai().get(i).getPegawai().getNama());
+		for(int i = 0; i < jabatan.getPegawai().size(); i++) {
+			System.out.println(jabatan.getPegawai().get(i).getNama());
 		}
 		return "lihat-jabatan";
 	}
@@ -62,7 +62,7 @@ public class JabatanController {
 		return "tambah";
 	}
 	
-	@RequestMapping(value = "/jabatan/ubah/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/jabatan/ubah/{id}")
 	private String ubah(@PathVariable(value ="id", required = true) String id, Model model) {
 		JabatanModel newJabatan = jabatanService.getJabatanDetailById(Long.parseLong(id));
 		model.addAttribute("jabatan", newJabatan);
@@ -101,7 +101,7 @@ public class JabatanController {
 			JabatanModel jabatan = jabatanService.getJabatanDetailById(longId);
 			if(jabatan != null) {
 				
-				if(jabatan.getJabatan_pegawai().isEmpty()) {
+				if(jabatan.getPegawai().isEmpty()) {
 					String header = "Jabatan " + jabatan.getNama() + " berhasil dihapus";
 					String comment = "Database jabatan sudah diupdate";
 					model.addAttribute("header", header);

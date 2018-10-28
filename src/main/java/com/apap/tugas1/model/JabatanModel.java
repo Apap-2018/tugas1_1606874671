@@ -11,11 +11,18 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * 
@@ -44,8 +51,15 @@ public class JabatanModel implements Serializable{
 	@Column(name = "gaji_pokok")
 	private double gaji_pokok;
 	
-	@OneToMany(mappedBy = "jabatan", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	private List<JabatanPegawaiModel> jabatan_pegawai;
+	@ManyToMany(mappedBy = "jabatan",
+			fetch = FetchType.LAZY,
+			cascade = {
+			CascadeType.PERSIST,
+			CascadeType.MERGE
+			})
+	@JsonIgnore
+	private List<PegawaiModel> pegawai;
+
 
 	public long getId() {
 		return id;
@@ -78,12 +92,13 @@ public class JabatanModel implements Serializable{
 	public void setGaji_pokok(double gaji_pokok) {
 		this.gaji_pokok = gaji_pokok;
 	}
-	
-	public List<JabatanPegawaiModel> getJabatan_pegawai() {
-		return jabatan_pegawai;
+
+
+	public List<PegawaiModel> getPegawai() {
+		return pegawai;
 	}
 
-	public void setJabatan_pegawai(List<JabatanPegawaiModel> jabatan_pegawai) {
-		this.jabatan_pegawai = jabatan_pegawai;
+	public void setPegawai(List<PegawaiModel> pegawai) {
+		this.pegawai = pegawai;
 	}
 }
