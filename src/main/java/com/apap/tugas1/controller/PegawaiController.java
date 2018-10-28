@@ -124,11 +124,8 @@ public class PegawaiController {
 	private String addRow (@ModelAttribute PegawaiModel pegawai, Model model, BindingResult bindingResult) {
 		pegawai.getJabatan().add(new JabatanModel());
 		model.addAttribute("pegawai", pegawai);
-		
 		model.addAttribute("tanggalLahir", pegawai.getTanggal_lahir());
-		
 		System.out.println(pegawai.getNama());
-		
 		System.out.println(pegawai.getInstansi().getNama());
 		
 		List<InstansiModel> listInstansi = instansiService.getInstansiFromProvinsi(pegawai.getInstansi().getProvinsi());
@@ -138,8 +135,7 @@ public class PegawaiController {
 		model.addAttribute("semuaInstansi",	listInstansi);
 		model.addAttribute("semuaJabatan",	listJabatan);
 		model.addAttribute("semuaProvinsi", listProvinsi);
-		return "tambahPegawai";		
-		
+		return "tambah-pegawai";
 	}
 	
 	@RequestMapping(value="/pegawai/tambah", params={"removeRow"}, method = RequestMethod.POST)
