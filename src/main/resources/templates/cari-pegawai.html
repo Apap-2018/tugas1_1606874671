@@ -13,15 +13,16 @@
 			<div class="col-md-12">
 				<div class="card">
 					<div class="card-header">
-						<h1>Cari Pegawai</h1>
+						<h2>Cari Pegawai</h2>
 					</div>
 					<div class="card-body">
+					
 						<form th:action="@{/pegawai/cari}" th:object="${pegawai}" method="GET">
 							<table class="table">
 								<tr>
 									<td><p>Provinsi</p><td>
 									<td>
-										<select  class="form-control" name="provinsi" id="provinsi">
+										<select  class="form-control" name="idProvinsi" id="provinsi">
 									    	<option disabled="disabled" selected="selected">Pilih Provinsi</option>
 											<option th:each="provinsi : ${semuaProvinsi}"
 													th:value="${provinsi.id}"
@@ -32,7 +33,7 @@
 								<tr>
 									<td><p>Nama Instansi</p><td>
 									<td>
-										<select class="form-control" name="instansi" id="instansi">
+										<select class="form-control" name="idInstansi" id="instansi">
 					                    	<option disabled="disabled" selected="selected" value="" >Pilih Instansi</option>
 					                    	<option th:each="instansi : ${semuaInstansi}"
 					                    			th:value="${instansi.id}"
@@ -45,7 +46,7 @@
 								<tr>
 									<td><p>Jabatan</p><td>
 									<td>
-		                                <select  class="form-control" name="jabatan" id="jabatan">
+		                                <select  class="form-control" name="idJabatan" id="jabatan">
 		                                    <option disabled="disabled" selected="selected" >Pilih Jabatan
 		                                    </option>
 		                                    <option th:each="jabatan : ${semuaJabatan}"
@@ -57,13 +58,69 @@
 								</tr>
 								
 								<tr>
-									<td><button type="submit" name="submit" class="btn btn-primary">Cari</button></td>
+									<td><button type="submit" class="btn btn-primary">Cari</button></td>
 								</tr>
 							</table>
 						</form>
 					</div>
 				</div>
 			</div>
+			<br>
+			<div class="d-flex justify-content-center" id="judul">
+				
+				<!-- apabila ada provinsi -->
+				<span th:if="${provinsi} != null">
+					<!-- apabila ada provinsi dan instansi -->
+					<span th:if="${instansi} != null">
+						<!-- apabila ada provinsi, instansi, dan jabatan -->
+						<span th:if="${jabatan} != null">
+							<p th:text="'Daftar Seluruh Pegawai yang Bekerja di Provinsi ' + ${provinsi.nama} + ' dengan Instansi ' + ${instansi.nama} + ' dan Jabatan ' + ${jabatan.nama}"></p>
+						</span>
+						<!-- apabila ada provinsi, instansi dan tidak ada jabatan -->
+						<span th:unless="${jabatan} != null">
+							<p th:text="'Daftar Seluruh Pegawai yang Bekerja di Provinsi ' + ${provinsi.nama} + ' dengan Instansi ' + ${instansi.nama}"></p>
+						</span>
+					</span>
+					
+					<!-- apabila ada provinsi dan tidak ada instansi -->
+					<span th:unless="${instansi} != null">
+						<!-- apabila ada provinsi dan jabatan tapi tidak ada instansi -->
+						<span th:if="${jabatan} != null">
+							<p th:text="'Daftar Seluruh Pegawai yang Bekerja di Provinsi ' + ${provinsi.nama} + ' dengan Jabatan ' + ${jabatan.nama}"></p>
+						</span>
+						<!-- apabila ada provinsi tapi tidak ada intansi dan jabatan -->
+						<span th:unless="${jabatan} != null">
+							<p th:text="'Daftar Seluruh Pegawai yang Bekerja di Provinsi ' + ${provinsi.nama}"></p>
+						</span>
+					</span>				
+				</span>
+				<!-- apabila tidak ada provinsi -->
+				<span th:unless="${provinsi} != null">
+					<!-- apabila ada instansi -->
+					<span th:if="${instansi} != null">
+						<!-- apabila hanya ada instansi dan jabatan -->
+						<span th:if="${jabatan} != null">
+							<p th:text="'Daftar Seluruh Pegawai yang Bekerja dengan Instansi ' + ${instansi.nama} + ' dan Jabatan ' + ${jabatan.nama}"></p>
+						</span>
+						<!-- apabila hanya ada instansi -->
+						<span th:unless="${jabatan} != null">
+							<p th:text="'Daftar Seluruh Pegawai yang Bekerja dengan Instansi ' + ${instansi.nama}"></p>
+						</span>
+					</span>
+					<!-- apabila tidak ada instansi -->
+					<span th:unless="${instansi} != null">
+						<!-- apabila hanya jabatan -->
+						<span th:if="${jabatan} != null">
+							<p th:text="'Daftar Seluruh Pegawai yang Bekerja dengan Jabatan ' + ${jabatan.nama}"></p>
+						</span>
+						<!-- apabila tidak ada semua -->
+						<span th:unless="${jabatan} != null">
+							<p th:text="'Daftar Seluruh Pegawai'"></p>
+						</span>
+					</span>		
+				</span>
+			</div>
+			
 			<br>
 			<table id="example" class="table table-striped table-bordered" style="width:100%">
 				<thead>
@@ -97,10 +154,28 @@
 			<footer th:replace="fragments/fragment :: footer"></footer>
 		</div>
 		
-		<script>
+		<script th:inline="javascript">
 			$(document).ready(function() {
 			    $('#example').DataTable();
 			} );
+			
+			$('#provinsi').change(
+			     function() {
+			         $.getJSON("/instansi/getFromProvinsi", {
+			             provinsiId : $(this).val(),
+			             ajax : 'true'
+			         }, function(data) {
+			             var html = '<option value="">Pilih Instansi</option>';
+			             var len = data.length;
+			             for ( var i = 0; i < len; i++) {
+			                 html += '<option value="' + data[i].id + '">'
+			                         + data[i].nama + '</option>';
+			             }
+			             html += '</option>';
+			             $('#instansi').html(html);
+			         });
+			     });
 		</script>
+		<script th:replace="fragments/fragment :: script"></script>
 	</body>
 </html>

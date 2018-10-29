@@ -10,27 +10,35 @@
 		<br>
 		
 		<div class="container">
-			<table id="example" class="table table-striped table-bordered" style="width:100%">
-				<thead>
-				    <tr>
-				        <th>Nama</th>
-				        <th>Deskripsi</th>
-				        <th>Jumlah Pegawai</th>
-				        <th>Gaji Pokok</th>
-				    </tr>
-				</thead>
-				<tbody>
-					<div th:each="jabatan : ${semuaJabatan}">
-					    <tr>
-					        <td><p th:text="${jabatan.nama}"></p></td>
-					        <td><p th:text="${jabatan.deskripsi}"></p></td>
-					        <td><p th:text="${jabatan.pegawai.size()}"></p></td>
-					        <td><p th:text="${jabatan.gaji_pokok}"></p></td>
-					    </tr>
-				    </div>
-				</tbody>
-			</table>
-		
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header">
+						<h2>Lihat Semua Jabatan</h2>
+					</div>
+					<div class="card-body">
+						<table id="example" class="table table-striped table-bordered" style="width:100%">
+							<thead>
+							    <tr>
+							        <th>Nama</th>
+							        <th>Deskripsi</th>
+							        <th>Jumlah Pegawai</th>
+							        <th>Gaji Pokok</th>
+							    </tr>
+							</thead>
+							<tbody>
+								<div th:each="jabatan : ${semuaJabatan}">
+								    <tr>
+								        <td><p th:text="${jabatan.nama}"></p></td>
+								        <td><p th:text="${jabatan.deskripsi}"></p></td>
+								        <td><p th:text="${jabatan.pegawai.size()}"></p></td>
+								        <td><p th:text="${jabatan.gaji_pokok}"></p></td>
+								    </tr>
+							    </div>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
 			<footer th:replace="fragments/fragment :: footer"></footer>
 		</div>
 		
