@@ -56,7 +56,8 @@
 						</table>
 					</div>
 					<div class="card-footer">
-						<form th:action="@{/pegawai/ubah/} + ${pegawai.nip}">
+						<form th:action="@{/pegawai/ubah}" method="GET">
+							<input type="hidden" name="nip" th:value="${pegawai.nip}">
 							<button type="submit" class="btn btn-primary">Ubah</button>
 						</form>
 					</div>
